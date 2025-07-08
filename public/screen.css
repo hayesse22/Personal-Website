@@ -83,8 +83,28 @@ button#spin:hover {
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Add spacing between the two .container sections */
+.container {
+  margin-bottom: 60px;  /* More space below each game container */
+}
+
+/* Style for the coin flip container to match slot machine */
+.container.coin-flip {
+  max-width: 600px;
+  width: 90%;
+  background: #222;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+  color: #fff;
+  margin: 0 auto 60px; /* center horizontally and space below */
+}
+
+/* Make the coin flip emoji size consistent with reels */
 .coin {
-  font-size: 5rem;
+  font-size: 3.5rem;  /* same as .reel */
   margin: 20px 0;
   height: 100px;
   display: flex;
