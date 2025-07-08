@@ -30,5 +30,23 @@
       document.getElementById('message').textContent = data.message;
     });
   </script>
+
+  <div class="container">
+    <h1>🪙 Coin Flip</h1>
+      <div id="coin-result" class="coin">❓</div>
+      <button id="flip">FLIP</button>
+    <p id="flip-message">Make a guess!</p>
+  </div>
+
+  <script>
+    document.getElementById('flip').addEventListener('click', () => {
+      const coin = Math.random() < 0.5 ? 'Heads' : 'Tails';
+      const symbol = coin === 'Heads' ? '🙂' : '👑';
+
+      document.getElementById('coin-result').textContent = symbol;
+      document.getElementById('flip-message').textContent = `It’s ${coin}!`;
+    });
+  </script>
+
 </body>
 </html>
