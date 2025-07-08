@@ -46,7 +46,7 @@
   <script>
     // Slot Machine script
     document.getElementById('spin').addEventListener('click', async () => {
-      const response = await fetch('/.netlify/functions/spin');
+      const response = await fetch('/.netlify/functions/index');
       const data = await response.json();
 
       const reels = document.querySelectorAll('.reel');
