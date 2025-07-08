@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Slot Machine</title>
-  <link rel="stylesheet" href="screen.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎰 Ultimate Gambling Site</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🎰 Slot Machine</h1>
-    <div class="slot-machine" id="slots">
-      <div class="reel">❓</div>
-      <div class="reel">❓</div>
-      <div class="reel">❓</div>
-    </div>
-    <button id="spin">SPIN</button>
-    <p id="message">Welcome!</p>
-  </div>
+  <header>
+    <nav class="navbar">
+      <div class="logo">🎲 Casino Royale</div>
+      <ul class="nav-links">
+        <li><a href="#slot-machine">Slot Machine</a></li>
+        <li><a href="#coin-flip">Coin Flip</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="slot-machine" class="container game-section">
+      <h1>🎰 Slot Machine</h1>
+      <div class="slot-machine" id="slots">
+        <div class="reel">❓</div>
+        <div class="reel">❓</div>
+        <div class="reel">❓</div>
+      </div>
+      <button id="spin">SPIN</button>
+      <p id="message">Welcome!</p>
+    </section>
+
+    <section id="coin-flip" class="container game-section">
+      <h1>🪙 Coin Flip</h1>
+      <div id="coin-result" class="coin">❓</div>
+      <button id="flip">FLIP</button>
+      <p id="flip-message">Make a guess!</p>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <p>Contact us at <a href="mailto:support@casinoroyale.example">support@casinoroyale.example</a></p>
+    <p>© 2025 Casino Royale. All rights reserved.</p>
+  </footer>
 
   <script>
+    // Slot Machine script
     document.getElementById('spin').addEventListener('click', async () => {
-      const response = await fetch('/.netlify/functions/index');
+      const response = await fetch('/.netlify/functions/spin');
       const data = await response.json();
 
       const reels = document.querySelectorAll('.reel');
@@ -29,16 +56,8 @@
 
       document.getElementById('message').textContent = data.message;
     });
-  </script>
 
-  <div class="container coin-flip">
-    <h1>🪙 Coin Flip</h1>
-      <div id="coin-result" class="coin">❓</div>
-      <button id="flip">FLIP</button>
-    <p id="flip-message">Make a guess!</p>
-  </div>
-
-  <script>
+    // Coin Flip script
     document.getElementById('flip').addEventListener('click', () => {
       const coin = Math.random() < 0.5 ? 'Heads' : 'Tails';
       const symbol = coin === 'Heads' ? '🙂' : '👑';
@@ -47,6 +66,6 @@
       document.getElementById('flip-message').textContent = `It’s ${coin}!`;
     });
   </script>
-
 </body>
 </html>
+
