@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slot Machine</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎰 Slot Machine</h1>
+    <div class="slot-machine" id="slots">
+      <div class="reel">❓</div>
+      <div class="reel">❓</div>
+      <div class="reel">❓</div>
+    </div>
+    <button id="spin">SPIN</button>
+    <p id="message">Welcome!</p>
+  </div>
+
+  <script>
+    document.getElementById('spin').addEventListener('click', async () => {
+      const response = await fetch('/api/spin');
+      const data = await response.json();
+
+      const reels = document.querySelectorAll('.reel');
+      data.result.forEach((symbol, i) => {
+        reels[i].textContent = symbol;
+      });
+
+      document.getElementById('message').textContent = data.message;
+    });
+  </script>
+</body>
+</html>
