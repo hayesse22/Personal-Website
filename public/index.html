@@ -18,9 +18,14 @@
     </nav>
   </header>
 
+  <div id="balance-container">
+    <h2>Balance: $<span id="balance">1000</span></h2>
+  </div>
+
   <main>
     <section id="slot-machine" class="container game-section">
       <h1>🎰 Slot Machine</h1>
+      <input type="number" id="slot-bet" placeholder="Enter bet amount" min="1" />
       <div class="slot-machine" id="slots">
         <div class="reel">❓</div>
         <div class="reel">❓</div>
@@ -65,6 +70,54 @@
       document.getElementById('coin-result').textContent = symbol;
       document.getElementById('flip-message').textContent = `It’s ${coin}!`;
     });
+
+    async function fetchBalance() {
+      const res = await fetch('/.netlify/functions/balance', {
+       method: 'POST',
+       body: JSON.stringify({ action: 'get' }),
+      });
+      const data = await res.json();
+      document.getElementById('balance').textContent = data.balance;
+    }
+
+    async function spinSlot() {
+      const betInput = document.getElementById('slot-bet');
+      const bet = Number(betInput.value);
+      if (!bet || bet <= 0) {
+        alert('Enter a valid bet.');
+        return;
+      }
+
+      // Disable button while spinning
+      document.getElementById('spin').disabled = true;
+
+      const res = await fetch('/.netlify/functions/slot', {
+        method: 'POST',
+        body: JSON.stringify({ bet }),
+      });
+      if (!res.ok) {
+        alert(await res.text());
+        document.getElementById('spin').disabled = false;
+        return;
+      }
+
+      const data = await res.json();
+      const reels = document.querySelectorAll('.reel');
+      data.result.forEach((sym, i) => {
+        reels[i].textContent = sym;
+      });
+
+      document.getElementById('slot-message').textContent = data.message;
+      document.getElementById('balance').textContent = data.balance;
+
+      document.getElementById('spin').disabled = false;
+    }
+
+    document.getElementById('spin').addEventListener('click', spinSlot);
+
+    // Initial load
+    fetchBalance();
+
   </script>
 </body>
 </html>
