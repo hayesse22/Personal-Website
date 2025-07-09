@@ -112,6 +112,24 @@
     // Init on page load
     setBalance(getBalance());
 
+    function getBalance() {
+      const stored = localStorage.getItem("balance");
+      return stored ? Number(stored) : 1000;
+    }
+
+    function setBalance(amount) {
+      localStorage.setItem("balance", amount);
+      document.getElementById("balance").textContent = amount;
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const stored = localStorage.getItem("balance");
+      if (!stored) localStorage.setItem("balance", "1000");
+      setBalance(Number(localStorage.getItem("balance")));
+    });
+
+
   </script>
 </body>
 </html>

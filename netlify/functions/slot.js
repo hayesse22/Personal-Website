@@ -1,4 +1,11 @@
 exports.handler = async (event) => {
+  const data = await res.json();
+  setBalance(data.balance); // ✅ PUT THIS RIGHT HERE
+
+  // Update visuals
+  const reels = document.querySelectorAll('.reel');
+  data.result.forEach((sym, i) => reels[i].textContent = sym);
+  document.getElementById('slot-message').textContent = data.message;
   const { bet, currentBalance } = JSON.parse(event.body || '{}');
 
   if (typeof bet !== 'number' || bet <= 0 || typeof currentBalance !== 'number') {
