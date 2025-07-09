@@ -72,52 +72,45 @@
       document.getElementById('flip-message').textContent = `It’s ${coin}!`;
     });
 
-    async function fetchBalance() {
-      const res = await fetch('/.netlify/functions/balance', {
-       method: 'POST',
-       body: JSON.stringify({ action: 'get' }),
-      });
-      const data = await res.json();
-      document.getElementById('balance').textContent = data.balance;
+    function getBalance() {
+      const stored = localStorage.getItem("balance");
+      return stored ? Number(stored) : 1000;
+    }
+
+    function setBalance(amount) {
+      localStorage.setItem("balance", amount);
+      document.getElementById("balance").textContent = amount;
     }
 
     async function spinSlot() {
-      const betInput = document.getElementById('slot-bet');
-      const bet = Number(betInput.value);
-      if (!bet || bet <= 0) {
-        alert('Enter a valid bet.');
-        return;
-      }
+      const bet = Number(document.getElementById('slot-bet').value);
+      if (!bet || bet <= 0) return alert('Enter a valid bet.');
 
-      // Disable button while spinning
-      document.getElementById('spin').disabled = true;
+      const currentBalance = getBalance();
+      if (bet > currentBalance) return alert('Not enough balance.');
 
       const res = await fetch('/.netlify/functions/slot', {
         method: 'POST',
-        body: JSON.stringify({ bet }),
+        body: JSON.stringify({ bet, currentBalance }),
       });
+
       if (!res.ok) {
         alert(await res.text());
-        document.getElementById('spin').disabled = false;
         return;
       }
 
       const data = await res.json();
       const reels = document.querySelectorAll('.reel');
-      data.result.forEach((sym, i) => {
-        reels[i].textContent = sym;
-      });
+      data.result.forEach((sym, i) => reels[i].textContent = sym);
 
       document.getElementById('slot-message').textContent = data.message;
-      document.getElementById('balance').textContent = data.balance;
-
-      document.getElementById('spin').disabled = false;
+      setBalance(data.balance);
     }
 
     document.getElementById('spin').addEventListener('click', spinSlot);
 
-    // Initial load
-    fetchBalance();
+    // Init on page load
+    setBalance(getBalance());
 
   </script>
 </body>
